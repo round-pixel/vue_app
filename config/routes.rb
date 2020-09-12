@@ -5,4 +5,13 @@ Rails.application.routes.draw do
     sessions: 'clients/sessions',
     registrations: 'clients/registrations'
   }
+
+  devise_for :staffs, controllers: {
+    sessions: 'staffs/sessions',
+    registrations: 'staffs/registrations'
+  }
+
+  namespace :staffs do
+    get 'dashboard', to: 'dashboard#index'
+  end
 end
