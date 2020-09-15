@@ -16,10 +16,14 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       namespace :clients do
+        post 'authentication_token', to: 'base#authentication_token'
+
         resources :some_data, only: :index
       end
 
       namespace :staffs do
+        post 'authentication_token', to: 'base#authentication_token'
+
         resources :some_data, only: :index
       end
     end
