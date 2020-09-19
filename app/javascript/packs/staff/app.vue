@@ -1,14 +1,14 @@
 <template lang="pug">
-  #app
-    p {{ message }}
+  v-app
+    navbar
 </template>
 
 <script>
+import navbar from 'staff/components/navbar'
+
 export default {
-  data: function () {
-    return {
-      message: "Hello Vue!"
-    }
+  components: {
+    navbar
   }
 }
 </script>
