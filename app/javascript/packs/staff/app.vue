@@ -1,7 +1,6 @@
-<template>
-  <div id="app">
-    <p>{{ message }}</p>
-  </div>
+<template lang="pug">
+  #app
+    p {{ message }}
 </template>
 
 <script>
@@ -14,9 +13,8 @@ export default {
 }
 </script>
 
-<style scoped>
-p {
-  font-size: 2em;
-  text-align: center;
-}
+<style lang="sass" scoped>
+  p
+    font-size: 2em
+    text-align: center
 </style>
