@@ -12,9 +12,3 @@ export default {
   }
 }
 </script>
-
-<style lang="sass" scoped>
-  p
-    font-size: 2em
-    text-align: center
-</style>

@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import vuetify from 'plugins/vuetify'
 
-import App from 'staff/app.vue'
+import 'staff/api'
+import App from 'staff/app'
 
 document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({

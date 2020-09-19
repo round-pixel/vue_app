@@ -1,46 +1,55 @@
-<template>
-  <div>
-    <v-app-bar
-        color="light-blue accent-1"
-    >
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
-      <v-toolbar-title>Page title</v-toolbar-title>
-
-      <v-spacer></v-spacer>
-
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-
-      <v-menu
-          left
-          bottom
-      >
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-              icon
-              v-bind="attrs"
-              v-on="on"
-          >
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
-        </template>
-
-        <v-list>
-          <v-list-item
-              v-for="n in 5"
-              :key="n"
-              @click="() => {}"
-          >
-            <v-list-item-title>Option {{ n }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </v-app-bar>
-  </div>
+<template lang="pug">
+  div
+    template(v-if="loading")
+      p Loading...
+    template(v-else-if="error")
+      p Error :(
+    template(v-else)
+      v-app-bar(color='light-blue accent-1')
+        img(class="mr-3" :src="require('staff/src/images/logo.png')" height="40")
+        v-toolbar-title(class="font-weight-bold") Staff Dashboard
+        v-spacer
+        v-toolbar-title {{ user.email }}
+          v-btn(icon='' color="orange darken-2")
+            v-icon(@click="sign_out") mdi-exit-to-app
 </template>
+
+<script>
+
+  export default {
+    data () {
+      return {
+        loading: true,
+        error: false,
+        user: {}
+      }
+    },
+    created() {
+      this.fetchUser()
+    },
+    methods: {
+      fetchUser () {
+        this.loading = true
+        setTimeout(()=> {
+          this.$api.current()
+            .then(response => this.user = response.data)
+            .catch((e) => this.error = true)
+            .finally(() => this.loading = false)
+        }, 100)
+      },
+
+      sign_out() {
+        this.$api.sign_out()
+          .then(() => location.reload())
+
+      }
+    }
+  }
+</script>
+
+<style lang="sass" scoped>
+  p
+    font-size: 2em
+    text-align: center
+    margin-top: 5em
+</style>
