@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import vuetify from 'plugins/vuetify'
+import vuetify from 'common_configs/plugins/vuetify'
 
 import 'staff/api'
 import App from 'staff/app'

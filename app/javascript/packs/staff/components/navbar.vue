@@ -5,7 +5,7 @@
     template(v-else-if="error")
       p Error :(
     template(v-else)
-      v-app-bar(color='light-blue accent-1')
+      v-app-bar(app='' color='light-blue accent-1')
         img(class="mr-3" :src="require('staff/src/images/logo.png')" height="40")
         v-toolbar-title(class="font-weight-bold") Staff Dashboard
         v-spacer

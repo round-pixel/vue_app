@@ -12,5 +12,7 @@ Rails.application.routes.draw do
   namespace :staffs do
     get 'dashboard', to: 'dashboard#index'
     get 'current', to: 'dashboard#current'
+
+    resources :clients, only: [:index, :create]
   end
 end
