@@ -7,8 +7,6 @@ class Staffs::ClientsController < ApplicationController
 
   def create
     @client = Client.new(client_params)
-    @client.password = '12345678'
-    @client.password_confirmation = '12345678'
 
     if @client.save
       render json: @client.as_json(only: [:id, :email, :full_name, :phone]), status: 201

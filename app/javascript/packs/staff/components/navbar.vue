@@ -33,7 +33,7 @@
         setTimeout(()=> {
           this.$api.current()
             .then(response => this.user = response.data)
-            .catch((e) => this.error = true)
+            .catch(e => this.error = true)
             .finally(() => this.loading = false)
         }, 100)
       },
@@ -41,7 +41,6 @@
       sign_out() {
         this.$api.sign_out()
           .then(() => location.reload())
-
       }
     }
   }
