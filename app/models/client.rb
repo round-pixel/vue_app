@@ -1,6 +1,9 @@
 class Client < ApplicationRecord
   include Deviseable
 
+  has_many :client_organizations
+  has_many :organizations, through: :client_organizations
+
   before_validation :assign_password,  if: -> { password.nil? }
 
   private
