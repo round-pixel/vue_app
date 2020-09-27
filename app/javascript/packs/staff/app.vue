@@ -15,13 +15,13 @@
 </template>
 
 <script>
-import navbar from 'staff/components/navbar'
-import dashboard from 'staff/components/dashboard'
+import Navbar from 'components/Navbar'
+import Dashboard from 'components/Dashboard'
 
 export default {
   components: {
-    dashboard,
-    navbar
+    Dashboard,
+    Navbar
   }
 }
 </script>

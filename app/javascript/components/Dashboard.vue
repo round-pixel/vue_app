@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import validations from 'common_configs/form_validation_rules'
+import validations from 'configs/form_validation_rules'
 const { fullnameRules, phoneRules, emailRules } = validations
 
 export default {
