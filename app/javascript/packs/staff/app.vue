@@ -1,27 +1,41 @@
 <template lang="pug">
   v-app
     // Drawer
-    // v-navigation-drawer(app='')
+    drawer(:selectTable="selectTable")
 
     // Navbar
     navbar
 
     // Dashboard
-    dashboard
+    dashboard(:currentTable="currentTable")
 
     // Footer
-    v-footer(app='')
-      p Footer
+    // footer
 </template>
 
 <script>
 import Navbar from 'components/Navbar'
 import Dashboard from 'components/Dashboard'
+import Drawer from 'components/Drawer'
+import Footer from 'components/Footer'
 
 export default {
+  data () {
+    return {
+      currentTable: 'organizations'
+    }
+  },
   components: {
     Dashboard,
-    Navbar
+    Navbar,
+    Drawer,
+    Footer,
+  },
+  methods: {
+    selectTable(name) {
+      this.currentTable = name.toLowerCase()
+      console.log(this.currentTable)
+    }
   }
 }
 </script>

@@ -1,12 +1,11 @@
 <template lang="pug">
-  div
-    v-app-bar(app='' color='light-blue accent-1')
-      img(class="mr-3" :src="require('src/images/logo.png')" height="40")
-      v-toolbar-title(class="font-weight-bold") Staff Dashboard
-      v-spacer
-      v-toolbar-title {{ user.email }}
-        v-btn(icon='')
-          v-icon(@click="sign_out") mdi-exit-to-app
+  v-app-bar(app)
+    img(class="mr-3" :src="require('src/images/logo.png')" height="40")
+    v-toolbar-title(class="font-weight-bold") Staff Dashboard
+    v-spacer
+    v-toolbar-title {{ user.email }}
+      v-btn(icon='' color='primary')
+        v-icon(@click="sign_out") mdi-exit-to-app
 </template>
 
 <script>

@@ -7,6 +7,10 @@ const api = {
   clients: {
     index: () => axios.get('clients'),
     create: (params) => axios.post('clients', params)
+  },
+  organizations: {
+    index: () => axios.get('organizations'),
+    create: (params) => axios.post('organizations', params)
   }
 }
 
