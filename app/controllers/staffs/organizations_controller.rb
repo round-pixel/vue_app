@@ -1,5 +1,7 @@
 class Staffs::OrganizationsController < ApplicationController
-  protect_from_forgery prepend: true
+  skip_before_action :verify_authenticity_token
+
+  before_action :set_organization, only: [:update, :destroy]
 
   def index
     render json: Organization.all.as_json(only: [:id, :org_name, :org_type, :inn, :ogrn])
@@ -15,9 +17,24 @@ class Staffs::OrganizationsController < ApplicationController
     end
   end
 
-  private
+  def update
+    @organization.update_attributes(organization_params)
 
-  def organization_params
-    params.require(:organization).permit(:org_name, :org_type, :inn, :ogrn)
+    render json: @organization.as_json(only: [:id, :org_name, :org_type, :inn, :ogrn]), status: 201
   end
+
+  def destroy
+    @organization.destroy
+
+    head :no_content
+  end
+
+  private
+    def set_organization
+      @organization = Organization.find(params[:id])
+    end
+
+    def organization_params
+      params.require(:organization).permit(:id, :org_name, :org_type, :inn, :ogrn)
+    end
 end

@@ -5,75 +5,113 @@
     template(v-else-if="error")
       p Error :(
     template(v-else)
-      // Form
-      v-row(justify='center')
-        v-dialog(v-model='dialog' persistent='' max-width='600px')
-          template(v-slot:activator='{ on, attrs }')
-            v-btn.ma-2(dark color='primary' v-bind='attrs' v-on='on')
-              v-icon.mr-3(left) mdi-plus
-              | Add Organization
-          v-card.pa-16
-            v-form(ref="form" @submit.prevent="createOrganization" v-model="valid" lazy-validation)
-              v-card-title
-                span.headline Organization Profile
-              v-card-text
-                v-container
+      v-data-table.elevation-1.pa-4.mt-4(:headers='headers' :items='organizations' :search='search')
+        template(v-slot:top='')
+          v-toolbar(flat='')
+            v-toolbar-title Organizations
+            v-spacer
+            v-text-field(v-model='search' append-icon='mdi-magnify' label='Search' single-line='' hide-details='')
+            v-spacer
+            v-dialog(v-model='dialog' max-width='500px')
+              template(v-slot:activator='{ on, attrs }')
+                v-btn.mb-2(color='primary' dark='' v-bind='attrs' v-on='on')
+                  v-icon.mr-3(left) mdi-plus
+                  | Add Organization
+              v-card.pa-4
+                v-card-title
+                  span.headline {{ formTitle }}
+                v-card-text
+                  v-container
                     v-row
                       v-col(cols="12")
-                        v-text-field(v-model= 'org_name' label='Organization name')
-                        v-text-field(v-model='org_type' label='Organization type')
-                        v-text-field(v-model='inn' label='INN')
-                        v-text-field(v-model='ogrn' label='OGRN')
-                small *indicates required field
-              v-card-actions
-                v-spacer
-                v-btn(color='blue darken-1' text='' @click='dialog = false')
-                  | Close
-                v-btn(color='blue darken-1' text=''  @click='validate()' type="submit")
-                  | Save
-
-      // Table
-      v-simple-table.mt-8(height='300px')
-        template(v-slot:default='')
-          thead
-            tr
-              th.text-left Id
-              th.text-left Organization name
-              th.text-left Organization type
-              th.text-left INN
-              th.text-left OGRN
-          tbody
-            tr(v-for='organization in organizations' :key='organization.name')
-              td {{ organization.id }}
-              td {{ organization.org_name }}
-              td {{ organization.org_type }}
-              td {{ organization.inn }}
-              td {{ organization.ogrn }}
+                        v-text-field(v-model= 'editedItem.org_name' label='Organization name')
+                        v-text-field(v-model='editedItem.org_type' label='Organization type')
+                        v-text-field(v-model='editedItem.inn' label='INN')
+                        v-text-field(v-model='editedItem.ogrn' label='OGRN')
+                v-card-actions
+                  v-spacer
+                  v-btn(color='blue darken-1' text='' @click='close')
+                    | Cancel
+                  v-btn(color='blue darken-1' text='' @click='save')
+                    | Save
+            v-dialog(v-model='dialogDelete' max-width='500px')
+              v-card
+                v-card-title.headline Are you sure you want to delete this item?
+                v-card-actions
+                  v-spacer
+                  v-btn(color='blue darken-1' text='' @click='closeDelete') Cancel
+                  v-btn(color='blue darken-1' text='' @click='deleteItemConfirm') OK
+                  v-spacer
+        template(v-slot:item.actions='{ item }')
+          v-icon.mr-2(small='' @click='editItem(item)')
+            | mdi-pencil
+          v-icon(small='' @click='deleteItem(item)')
+            | mdi-delete
+        template(v-slot:no-data='')
+          v-btn(color='primary' @click='initialize')
+            | Reset
 </template>
 
 <script>
 import Loading from 'components/Loading'
 
 export default {
-  components: {Loading},
   data () {
     return {
       showForm: false,
       loading: true,
       error: false,
-      dialog: false,
       organizations: [],
-
-      org_name: '',
-      org_type: '',
-      inn: '',
-      ogrn: '',
       valid: true,
+
+      search: '',
+      dialog: false,
+      dialogDelete: false,
+      headers: [
+        { text: 'Id', value: 'id', filterable: false,},
+        { text: 'Organization name', value: 'org_name' },
+        { text: 'Organization type', value: 'org_type', filterable: false },
+        { text: 'INN', value: 'inn', filterable: false },
+        { text: 'OGRN', value: 'ogrn', filterable: false },
+        { text: 'Actions', value: 'actions', sortable: false },
+      ],
+      editedIndex: -1,
+      editedItem: {
+        id: '',
+        org_name: '',
+        org_type: '',
+        inn: '',
+        ogrn: '',
+      },
+      defaultItem: {
+        id: '',
+        org_name: '',
+        org_type: '',
+        inn: '',
+        ogrn: '',
+      },
     }
   },
+
   created() {
     this.fetchOrganizations()
   },
+
+  computed: {
+    formTitle () {
+      return this.editedIndex === -1 ? 'New Organization' : 'Edit Organization'
+    },
+  },
+
+  watch: {
+    dialog (val) {
+      val || this.close()
+    },
+    dialogDelete (val) {
+      val || this.closeDelete()
+    },
+  },
+
   methods: {
     fetchOrganizations () {
       this.loading = true
@@ -85,39 +123,66 @@ export default {
       }, 1000)
     },
 
-    createOrganization() {
-      console.log('created')
-      const params = {
-        org_name: this.org_name,
-        org_type: this.org_type,
-        inn: this.inn,
-        ogrn: this.ogrn,
-      }
-
-      this.$api.organizations.create(params)
+    save() {
+      if (this.editedIndex > -1) {
+        this.$api.organizations.update(this.editedItem)
+          .then(response => {
+            Object.assign(this.organizations[this.editedIndex], response.data)
+            this.close()
+          })
+      } else {
+        this.$api.organizations.create(this.editedItem)
           .then(response => {
             this.organizations.push(response.data)
-            this.clearForm()
+            this.close()
           })
-          .catch(e => console.log(e.response.data))
-    },
-
-    clearForm() {
-      this.showForm = false
-      this.org_name = ''
-      this.org_type = ''
-      this.inn = ''
-      this.ogrn = ''
-      this.valid = true
+      }
     },
 
     validate () {
       this.$refs.form.validate()
       this.valid && (this.dialog = false)
     },
-    components: {
-      Loading
-    }
+
+    editItem (item) {
+      this.editedIndex = this.organizations.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialog = true
+    },
+
+    deleteItem (item) {
+      this.editedIndex = this.organizations.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialogDelete = true
+    },
+
+    deleteItemConfirm () {
+      this.$api.organizations.destroy(this.editedItem)
+          .then(response => {
+            this.organizations.splice(this.editedIndex, 1)
+            this.closeDelete()
+          })
+          .catch(e => console.log(e.response.data))
+    },
+
+    close () {
+      this.dialog = false
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      })
+    },
+
+    closeDelete () {
+      this.dialogDelete = false
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      })
+    },
+  },
+  components: {
+    Loading
   }
 }
 </script>
