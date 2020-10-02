@@ -3,8 +3,7 @@
     // Navbar
     navbar
 
-    // Dashboard
-    //dashboard
+    organizations
 
     // Footer
     v-footer(app='')
@@ -13,12 +12,13 @@
 
 <script>
 import Navbar from 'components/Navbar'
-import Dashboard from 'components/Dashboard'
+import Organizations from 'client/components/Organizations'
 
 export default {
   components: {
-    Dashboard,
-    Navbar
+    Organizations,
+    Navbar,
+    Dashboard
   }
 }
 </script>

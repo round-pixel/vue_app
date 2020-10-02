@@ -19,5 +19,7 @@ Rails.application.routes.draw do
 
   namespace :clients do
     get 'current', to: 'home#current'
+
+    resources :organizations,  only: [:index]
   end
 end

@@ -15,14 +15,14 @@
 
 <script>
 import Navbar from 'components/Navbar'
-import Dashboard from 'components/Dashboard'
-import Drawer from 'components/Drawer'
+import Dashboard from 'staff/components/Dashboard'
+import Drawer from 'staff/components/Drawer'
 import Footer from 'components/Footer'
 
 export default {
   data () {
     return {
-      currentTable: 'clients'
+      currentTable: 'organizations'
     }
   },
   components: {

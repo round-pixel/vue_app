@@ -5,8 +5,8 @@
 </template>
 
 <script>
-  import Clients from 'components/Clients'
-  import Organizations from 'components/Organizations'
+  import Clients from 'staff/components/Clients'
+  import Organizations from 'staff/components/Organizations'
 
   export default {
     props: {

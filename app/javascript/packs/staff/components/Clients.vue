@@ -5,10 +5,10 @@
     template(v-else-if="error")
       p Error :(
     template(v-else)
-      v-data-table.elevation-1.pa-4.mt-4(:headers='headers' :items='organizations' :search='search')
+      v-data-table.elevation-1.pa-4.mt-4(:headers='headers' :items='clients' :search='search')
         template(v-slot:top='')
           v-toolbar(flat='')
-            v-toolbar-title Organizations
+            v-toolbar-title Clients
             v-spacer
             v-text-field(v-model='search' append-icon='mdi-magnify' label='Search' single-line='' hide-details='')
             v-spacer
@@ -16,19 +16,19 @@
               template(v-slot:activator='{ on, attrs }')
                 v-btn.mb-2(color='primary' dark='' v-bind='attrs' v-on='on')
                   v-icon.mr-3(left) mdi-plus
-                  | Add Organization
-              v-card.pa-4
-                v-form(ref='form')
+                  | Add Client
+              v-form(ref='form' lazy-validation='')
+                v-card.pa-4
                   v-card-title
                     span.headline {{ formTitle }}
                   v-card-text
                     v-container
                       v-row
                         v-col(cols="12")
-                          v-text-field(v-model= 'editedItem.org_name' label='Organization name')
-                          v-text-field(v-model='editedItem.org_type' label='Organization type')
-                          v-text-field(v-model='editedItem.inn' label='INN')
-                          v-text-field(v-model='editedItem.ogrn' label='OGRN')
+                          v-text-field(v-model= 'editedItem.full_name' label='Full name' :rules="fullnameRules")
+                          v-text-field(v-model='editedItem.email' label='E-mail' :rules="emailRules")
+                          v-text-field(v-model='editedItem.phone' label='Phone' :rules="phoneRules")
+                          v-select(v-model='editedItem.organizations' :items='organizationNames' :menu-props="{ maxHeight: '400' }" label='Select' multiple='' hint='Pick organizations' persistent-hint='')
                   v-card-actions
                     v-spacer
                     v-btn(color='blue darken-1' text='' @click='close')
@@ -55,51 +55,59 @@
 
 <script>
 import Loading from 'components/Loading'
+import validations from 'configs/form_validation_rules'
+const { fullnameRules, phoneRules, emailRules } = validations
 
 export default {
   data () {
     return {
       loading: true,
       error: false,
+      clients: [],
       organizations: [],
+      selected: [],
       valid: true,
+      fullnameRules,
+      phoneRules,
+      emailRules,
       search: '',
       dialog: false,
       dialogDelete: false,
       headers: [
         { text: 'Id', value: 'id', filterable: false,},
-        { text: 'Organization name', value: 'org_name' },
-        { text: 'Organization type', value: 'org_type', filterable: false },
-        { text: 'INN', value: 'inn', filterable: false },
-        { text: 'OGRN', value: 'ogrn', filterable: false },
+        { text: 'Full name', value: 'full_name' },
+        { text: 'Email', value: 'email' },
+        { text: 'Phone', value: 'phone' },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
       editedIndex: -1,
       editedItem: {
         id: '',
-        org_name: '',
-        org_type: '',
-        inn: '',
-        ogrn: '',
+        email: '',
+        phone: '',
+        full_name: '',
       },
       defaultItem: {
         id: '',
-        org_name: '',
-        org_type: '',
-        inn: '',
-        ogrn: '',
+        email: '',
+        phone: '',
+        full_name: '',
       },
     }
   },
 
   created() {
+    this.fetchClients()
     this.fetchOrganizations()
   },
 
   computed: {
     formTitle () {
-      return this.editedIndex === -1 ? 'New Organization' : 'Edit Organization'
+      return this.editedIndex === -1 ? 'New Client' : 'Edit Client'
     },
+    organizationNames () {
+      return this.organizations.map(v => v['org_name'])
+    }
   },
 
   watch: {
@@ -112,50 +120,57 @@ export default {
   },
 
   methods: {
-    fetchOrganizations () {
+    fetchClients () {
       this.loading = true
       setTimeout( () => {
-        this.$api.organizations.index()
-            .then(response => this.organizations = response.data)
+        this.$api.clients.index()
+            .then(response => this.clients = response.data)
             .catch((e) => this.error = true)
             .finally(() => this.loading = false)
-      }, 1000)
+      }, 500)
+    },
+
+    fetchOrganizations () {
+      this.$api.organizations.index()
+          .then(response => this.organizations = response.data)
     },
 
     save() {
       this.$refs.form.validate()
 
+      Object.assign(this.editedItem['organizations'], this.organizations.filter(o => this.editedItem.organizations.includes(o.org_name)))
+
       if (this.editedIndex > -1) {
-        this.$api.organizations.update(this.editedItem)
-          .then(response => {
-            Object.assign(this.organizations[this.editedIndex], response.data)
-            this.close()
-          })
+        this.$api.clients.update(this.editedItem)
+            .then(response => {
+              Object.assign(this.clients[this.editedIndex], response.data)
+              this.close()
+            })
       } else {
-        this.$api.organizations.create(this.editedItem)
-          .then(response => {
-            this.organizations.push(response.data)
-            this.close()
-          })
+        this.$api.clients.create(this.editedItem)
+            .then(response => {
+              this.clients.push(response.data)
+              this.close()
+            })
       }
     },
 
     editItem (item) {
-      this.editedIndex = this.organizations.indexOf(item)
+      this.editedIndex = this.clients.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
 
     deleteItem (item) {
-      this.editedIndex = this.organizations.indexOf(item)
+      this.editedIndex = this.clients.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
     },
 
     deleteItemConfirm () {
-      this.$api.organizations.destroy(this.editedItem)
+      this.$api.clients.destroy(this.editedItem)
           .then(response => {
-            this.organizations.splice(this.editedIndex, 1)
+            this.clients.splice(this.editedIndex, 1)
             this.closeDelete()
           })
           .catch(e => console.log(e.response.data))
@@ -177,6 +192,7 @@ export default {
       })
     },
   },
+
   components: {
     Loading
   }
