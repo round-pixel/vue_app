@@ -18,22 +18,23 @@
                   v-icon.mr-3(left) mdi-plus
                   | Add Organization
               v-card.pa-4
-                v-card-title
-                  span.headline {{ formTitle }}
-                v-card-text
-                  v-container
-                    v-row
-                      v-col(cols="12")
-                        v-text-field(v-model= 'editedItem.org_name' label='Organization name')
-                        v-text-field(v-model='editedItem.org_type' label='Organization type')
-                        v-text-field(v-model='editedItem.inn' label='INN')
-                        v-text-field(v-model='editedItem.ogrn' label='OGRN')
-                v-card-actions
-                  v-spacer
-                  v-btn(color='blue darken-1' text='' @click='close')
-                    | Cancel
-                  v-btn(color='blue darken-1' text='' @click='save')
-                    | Save
+                v-form(ref='form')
+                  v-card-title
+                    span.headline {{ formTitle }}
+                  v-card-text
+                    v-container
+                      v-row
+                        v-col(cols="12")
+                          v-text-field(v-model= 'editedItem.org_name' label='Organization name')
+                          v-text-field(v-model='editedItem.org_type' label='Organization type')
+                          v-text-field(v-model='editedItem.inn' label='INN')
+                          v-text-field(v-model='editedItem.ogrn' label='OGRN')
+                  v-card-actions
+                    v-spacer
+                    v-btn(color='blue darken-1' text='' @click='close')
+                      | Cancel
+                    v-btn(color='blue darken-1' text='' @click='save')
+                      | Save
             v-dialog(v-model='dialogDelete' max-width='500px')
               v-card
                 v-card-title.headline Are you sure you want to delete this item?
@@ -58,12 +59,10 @@ import Loading from 'components/Loading'
 export default {
   data () {
     return {
-      showForm: false,
       loading: true,
       error: false,
       organizations: [],
       valid: true,
-
       search: '',
       dialog: false,
       dialogDelete: false,
@@ -124,6 +123,8 @@ export default {
     },
 
     save() {
+      this.$refs.form.validate()
+
       if (this.editedIndex > -1) {
         this.$api.organizations.update(this.editedItem)
           .then(response => {
@@ -137,11 +138,6 @@ export default {
             this.close()
           })
       }
-    },
-
-    validate () {
-      this.$refs.form.validate()
-      this.valid && (this.dialog = false)
     },
 
     editItem (item) {

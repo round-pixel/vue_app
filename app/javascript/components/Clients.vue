@@ -1,42 +1,39 @@
 <template lang="pug">
   div
     template(v-if="loading")
-      p Loading...
+      loading
     template(v-else-if="error")
       p Error :(
     template(v-else)
-      v-data-table(:headers='headers' :items='clients' sort-by='phone')
+      v-data-table.elevation-1.pa-4.mt-4(:headers='headers' :items='clients' :search='search')
         template(v-slot:top='')
           v-toolbar(flat='')
-            v-toolbar-title My CRUD
-            v-divider.mx-4(inset='' vertical='')
+            v-toolbar-title Clients
+            v-spacer
+            v-text-field(v-model='search' append-icon='mdi-magnify' label='Search' single-line='' hide-details='')
             v-spacer
             v-dialog(v-model='dialog' max-width='500px')
               template(v-slot:activator='{ on, attrs }')
                 v-btn.mb-2(color='primary' dark='' v-bind='attrs' v-on='on')
-                  | New Item
-              v-card
-                v-card-title
-                  span.headline {{ formTitle }}
-                v-card-text
-                  v-container
-                    v-row
-                      v-col(cols='12' sm='6' md='4')
-                        v-text-field(v-model='editedItem.name' label='Dessert name')
-                      v-col(cols='12' sm='6' md='4')
-                        v-text-field(v-model='editedItem.calories' label='Calories')
-                      v-col(cols='12' sm='6' md='4')
-                        v-text-field(v-model='editedItem.fat' label='Fat (g)')
-                      v-col(cols='12' sm='6' md='4')
-                        v-text-field(v-model='editedItem.carbs' label='Carbs (g)')
-                      v-col(cols='12' sm='6' md='4')
-                        v-text-field(v-model='editedItem.protein' label='Protein (g)')
-                v-card-actions
-                  v-spacer
-                  v-btn(color='blue darken-1' text='' @click='close')
-                    | Cancel
-                  v-btn(color='blue darken-1' text='' @click='save')
-                    | Save
+                  v-icon.mr-3(left) mdi-plus
+                  | Add Client
+              v-form(ref='form' lazy-validation='')
+                v-card.pa-4
+                  v-card-title
+                    span.headline {{ formTitle }}
+                  v-card-text
+                    v-container
+                      v-row
+                        v-col(cols="12")
+                          v-text-field(v-model= 'editedItem.full_name' label='Full name' :rules="fullnameRules")
+                          v-text-field(v-model='editedItem.email' label='E-mail' :rules="emailRules")
+                          v-text-field(v-model='editedItem.phone' label='Phone' :rules="phoneRules")
+                  v-card-actions
+                    v-spacer
+                    v-btn(color='blue darken-1' text='' @click='close')
+                      | Cancel
+                    v-btn(color='blue darken-1' text='' @click='save')
+                      | Save
             v-dialog(v-model='dialogDelete' max-width='500px')
               v-card
                 v-card-title.headline Are you sure you want to delete this item?
@@ -53,95 +50,137 @@
         template(v-slot:no-data='')
           v-btn(color='primary' @click='initialize')
             | Reset
-      // Form
-      v-divider
-
-      v-container
-        v-row.justify-center
-          v-col(cols-md='12' md='4')
-            v-card.pa-10
-              .text-h4.text-center.mb-5 New client
-
-              v-form(ref="form" @submit.prevent="createClient" v-model="valid" lazy-validation)
-                v-text-field(v-model= 'fullname' label='Full name' :rules="fullnameRules")
-                v-text-field(v-model='email' label='E-mail' :rules="emailRules")
-                v-text-field(v-model='phone' label='Phone' :rules="phoneRules")
-
-                v-btn.mr-4(outlined color='pink' @click="validate()" type="sbmit" block)
-                  | Submit
-
 </template>
 
 <script>
+import Loading from 'components/Loading'
 import validations from 'configs/form_validation_rules'
 const { fullnameRules, phoneRules, emailRules } = validations
 
 export default {
   data () {
     return {
-      // Api call
       loading: true,
       error: false,
       clients: [],
-
-      // Validations
-      fullname: '',
-      email: '',
-      phone: '',
       valid: true,
       fullnameRules,
       phoneRules,
       emailRules,
-
-      // Table
+      search: '',
       dialog: false,
       dialogDelete: false,
       headers: [
         { text: 'Id', value: 'id', filterable: false,},
-        { text: 'Full name', value: 'fullname' },
-        { text: 'Email', value: 'email', filterable: false },
-        { text: 'Phone', value: 'phone', filterable: false },
+        { text: 'Full name', value: 'full_name' },
+        { text: 'Email', value: 'email' },
+        { text: 'Phone', value: 'phone' },
+        { text: 'Actions', value: 'actions', sortable: false },
       ],
+      editedIndex: -1,
+      editedItem: {
+        id: '',
+        email: '',
+        phone: '',
+        full_name: '',
+      },
+      defaultItem: {
+        id: '',
+        email: '',
+        phone: '',
+        full_name: '',
+      },
     }
   },
+
   created() {
     this.fetchClients()
   },
+
+  computed: {
+    formTitle () {
+      return this.editedIndex === -1 ? 'New Client' : 'Edit Client'
+    },
+  },
+
+  watch: {
+    dialog (val) {
+      val || this.close()
+    },
+    dialogDelete (val) {
+      val || this.closeDelete()
+    },
+  },
+
   methods: {
     fetchClients () {
       this.loading = true
-      this.$api.clients.index()
-          .then(response => this.clients = response.data)
-          .catch((e) => this.error = true)
-          .finally(() => this.loading = false)
+      setTimeout( () => {
+        this.$api.clients.index()
+            .then(response => this.clients = response.data)
+            .catch((e) => this.error = true)
+            .finally(() => this.loading = false)
+      }, 500)
     },
 
-    createClient() {
-      const params = {
-        email: this.email,
-        phone: this.phone,
-        full_name: this.fullname
-      }
+    save() {
+      this.$refs.form.validate()
 
-      this.$api.clients.create(params)
+      if (this.editedIndex > -1) {
+        this.$api.clients.update(this.editedItem)
+            .then(response => {
+              Object.assign(this.clients[this.editedIndex], response.data)
+              this.close()
+            })
+      } else {
+        this.$api.clients.create(this.editedItem)
+            .then(response => {
+              this.clients.push(response.data)
+              this.close()
+            })
+      }
+    },
+
+    editItem (item) {
+      this.editedIndex = this.clients.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialog = true
+    },
+
+    deleteItem (item) {
+      this.editedIndex = this.clients.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialogDelete = true
+    },
+
+    deleteItemConfirm () {
+      this.$api.clients.destroy(this.editedItem)
           .then(response => {
-            this.clients.push(response.data)
-            this.clearForm()
+            this.clients.splice(this.editedIndex, 1)
+            this.closeDelete()
           })
           .catch(e => console.log(e.response.data))
     },
 
-    clearForm() {
-      this.showForm = false
-      this.fullname = ''
-      this.email = ''
-      this.phone = ''
-      this.valid = true
+    close () {
+      this.dialog = false
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      })
     },
 
-    validate () {
-      this.$refs.form.validate()
+    closeDelete () {
+      this.dialogDelete = false
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      })
     },
+  },
+
+  components: {
+    Loading
   }
 }
 </script>

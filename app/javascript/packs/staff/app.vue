@@ -22,7 +22,7 @@ import Footer from 'components/Footer'
 export default {
   data () {
     return {
-      currentTable: 'organizations'
+      currentTable: 'clients'
     }
   },
   components: {
