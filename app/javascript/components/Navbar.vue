@@ -1,7 +1,8 @@
 <template lang="pug">
   v-app-bar(app)
     img(class="mr-3" :src="require('src/images/logo.png')" height="40")
-    v-toolbar-title(class="font-weight-bold") Staff Dashboard
+    v-toolbar-title(class="font-weight-bold")
+      slot(name='title')
     v-spacer
     v-toolbar-title {{ user.email }}
       v-btn(icon='' color='primary')

@@ -5,6 +5,8 @@
 
     // Navbar
     navbar
+      template(#title)
+        | Staff Dashboard
 
     // Dashboard
     dashboard

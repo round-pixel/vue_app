@@ -2,6 +2,8 @@
   v-app
     // Navbar
     navbar
+      template(#title)
+        | Lorem Ipsum
 
     dashboard
       organizations
