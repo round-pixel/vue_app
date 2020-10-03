@@ -1,6 +1,6 @@
 <template lang="pug">
   v-app
-    drawer(:selectTable="selectTable")
+    drawer
 
     dashboard
       router-view

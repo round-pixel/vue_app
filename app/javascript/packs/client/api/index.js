@@ -1,11 +1,17 @@
 import axios from 'axios'
 import Vue from 'vue'
 
+const adapter = axios.create({
+  headers: {
+    'Accept': 'application/json'
+  }
+})
+
 const api = {
-  current: () => axios.get('/clients/current'),
-  sign_out: () => axios.get('/clients/sign_out'),
+  current: () => adapter.get('c/current'),
+  sign_out: () => adapter.get('/clients/sign_out'),
   organizations: {
-    index: () => axios.get('/clients/organizations'),
+    index: () => adapter.get('/c/organizations'),
   }
 }
 

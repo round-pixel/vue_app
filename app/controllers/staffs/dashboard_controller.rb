@@ -4,7 +4,7 @@ class Staffs::DashboardController < ApplicationController
   end
 
   def current
-    data = staff_signed_in? ? current_staff.as_json(only: [:email]) : {}
+    data = staff_signed_in? ? current_staff.as_json(only: [:email, :full_name]) : {}
 
     render json: data
   end

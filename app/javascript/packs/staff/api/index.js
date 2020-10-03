@@ -9,7 +9,7 @@ const adapter = axios.create({
 
 const api = {
   current: () => adapter.get('current'),
-  sign_out: () => adapter.get('sign_out'),
+  sign_out: () => adapter.get('/staffs/sign_out'),
   clients: {
     index: () => adapter.get('clients'),
     create: (params) => adapter.post('clients', params),
