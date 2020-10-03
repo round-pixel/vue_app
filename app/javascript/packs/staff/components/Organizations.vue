@@ -5,7 +5,7 @@
     template(v-else-if="error")
       p Error :(
     template(v-else)
-      v-data-table.elevation-1.pa-4.mt-4(:headers='headers' :items='organizations' :search='search')
+      v-data-table.elevation-1.pa-4.mt-4(:headers='headers' :items='organizations' :search='search' @click:row="pushToOrganization")
         template(v-slot:top='')
           v-toolbar(flat='')
             v-toolbar-title Organizations
@@ -193,6 +193,10 @@ export default {
         this.editedIndex = -1
       })
     },
+
+    pushToOrganization(row) {
+      this.$router.push({ name: 'organization', params: { id: row.id } })
+    }
   },
   components: {
     Loading

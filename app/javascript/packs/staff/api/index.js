@@ -8,7 +8,7 @@ const adapter = axios.create({
 })
 
 const api = {
-  current: () => adapter.get('current'),
+  current: () => adapter.get('/s/current'),
   sign_out: () => adapter.get('/staffs/sign_out'),
   clients: {
     index: () => adapter.get('clients'),
