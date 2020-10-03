@@ -29,6 +29,8 @@
                           v-text-field(v-model='editedItem.org_type' label='Organization type')
                           v-text-field(v-model='editedItem.inn' label='INN')
                           v-text-field(v-model='editedItem.ogrn' label='OGRN')
+                          v-select(v-model='editedItem.clients' :items='clientEmails' :menu-props="{ maxHeight: '400' }" label='Select' multiple='' hint='Pick clients' persistent-hint='')
+
                   v-card-actions
                     v-spacer
                     v-btn(color='blue darken-1' text='' @click='close')
@@ -62,6 +64,7 @@ export default {
       loading: true,
       error: false,
       organizations: [],
+      clients: [],
       valid: true,
       search: '',
       dialog: false,
@@ -81,6 +84,7 @@ export default {
         org_type: '',
         inn: '',
         ogrn: '',
+        clients: []
       },
       defaultItem: {
         id: '',
@@ -88,18 +92,24 @@ export default {
         org_type: '',
         inn: '',
         ogrn: '',
+        clients: []
       },
     }
   },
 
   created() {
     this.fetchOrganizations()
+    this.fetchClients()
   },
 
   computed: {
     formTitle () {
       return this.editedIndex === -1 ? 'New Organization' : 'Edit Organization'
     },
+
+    clientEmails () {
+      return this.clients.map(v => v['email'])
+    }
   },
 
   watch: {
@@ -122,8 +132,15 @@ export default {
       }, 300)
     },
 
+    fetchClients () {
+      this.$api.clients.index()
+          .then(response => this.clients = response.data)
+    },
+
     save() {
       this.$refs.form.validate()
+
+      Object.assign(this.editedItem['clients'], this.clients.filter(o => this.editedItem.clients.includes(o.email)))
 
       if (this.editedIndex > -1) {
         this.$api.organizations.update(this.editedItem)

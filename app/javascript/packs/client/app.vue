@@ -17,8 +17,7 @@ import Organizations from 'client/components/Organizations'
 export default {
   components: {
     Organizations,
-    Navbar,
-    Dashboard
+    Navbar
   }
 }
 </script>

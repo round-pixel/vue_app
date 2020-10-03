@@ -86,12 +86,14 @@ export default {
         email: '',
         phone: '',
         full_name: '',
+        organizations: []
       },
       defaultItem: {
         id: '',
         email: '',
         phone: '',
         full_name: '',
+        organizations: []
       },
     }
   },

@@ -10,7 +10,7 @@ class Staffs::ClientsController < ApplicationController
   def create
     @client = Client.new(client_params)
 
-    create_client_organizations
+    add_organizations
 
     if @client.save
       render json: @client.as_json(only: [:id, :email, :full_name, :phone]), status: 201
@@ -47,7 +47,7 @@ class Staffs::ClientsController < ApplicationController
       params.require(:client).permit(:email, :full_name, :phone)
     end
 
-    def create_client_organizations
+    def add_organizations
       @client.organizations << Organization.where(id: params[:organizations].map {|org| org[:id] })
     end
 
