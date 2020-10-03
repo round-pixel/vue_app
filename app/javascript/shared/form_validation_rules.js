@@ -1,4 +1,4 @@
-import regexps from 'configs/regexps'
+import regexps from 'regexps'
 
 const { phoneRegexp, emailRegexp } = regexps
 

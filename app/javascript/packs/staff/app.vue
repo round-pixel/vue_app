@@ -1,18 +1,10 @@
 <template lang="pug">
   v-app
-    // Drawer
     drawer(:selectTable="selectTable")
 
-    // Navbar
-    navbar
-      template(#title)
-        | Staff Dashboard
-
-    // Dashboard
     dashboard
-      component(:is="currentTable")
+      router-view
 
-    // Footer
     footer
 </template>
 
@@ -25,24 +17,11 @@ import Clients from 'staff/components/Clients'
 import Organizations from 'staff/components/Organizations'
 
 export default {
-  data () {
-    return {
-      currentTable: 'organizations'
-    }
-  },
   components: {
     Dashboard,
     Navbar,
     Drawer,
     Footer,
-    Clients,
-    Organizations
   },
-  methods: {
-    selectTable(name) {
-      this.currentTable = name.toLowerCase()
-      console.log(this.currentTable)
-    }
-  }
 }
 </script>
