@@ -3,21 +3,25 @@
     // Navbar
     navbar
 
-    organizations
+    dashboard
+      organizations
 
     // Footer
-    v-footer(app='')
-      p Footer
+    footer
 </template>
 
 <script>
 import Navbar from 'components/Navbar'
+import Dashboard from 'components/Dashboard'
+import Footer from 'components/Footer'
 import Organizations from 'client/components/Organizations'
 
 export default {
   components: {
+    Navbar,
+    Dashboard,
     Organizations,
-    Navbar
+    Footer,
   }
 }
 </script>

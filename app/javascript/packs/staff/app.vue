@@ -7,17 +7,20 @@
     navbar
 
     // Dashboard
-    dashboard(:currentTable="currentTable")
+    dashboard
+      component(:is="currentTable")
 
     // Footer
-    // footer
+    footer
 </template>
 
 <script>
 import Navbar from 'components/Navbar'
-import Dashboard from 'staff/components/Dashboard'
-import Drawer from 'staff/components/Drawer'
+import Dashboard from 'components/Dashboard'
 import Footer from 'components/Footer'
+import Drawer from 'staff/components/Drawer'
+import Clients from 'staff/components/Clients'
+import Organizations from 'staff/components/Organizations'
 
 export default {
   data () {
@@ -30,6 +33,8 @@ export default {
     Navbar,
     Drawer,
     Footer,
+    Clients,
+    Organizations
   },
   methods: {
     selectTable(name) {
