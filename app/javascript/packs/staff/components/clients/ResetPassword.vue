@@ -1,3 +1,3 @@
 <template lang="pug">
-  p Client
+  p Reset Password
 </template>

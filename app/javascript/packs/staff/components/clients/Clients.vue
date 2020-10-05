@@ -5,7 +5,7 @@
     template(v-else-if="error")
       p Error :(
     template(v-else)
-      v-data-table.elevation-1.pa-4.mt-4(:headers='headers' :items='clients' :search='search' @click:row="pushToClient")
+      v-data-table.elevation-1(:headers='headers' :items='clients' :search='search' @click:row="pushToClient")
         template(v-slot:top='')
           v-toolbar(flat='')
             v-toolbar-title Clients
@@ -78,7 +78,7 @@ export default {
         { text: 'Full name', value: 'full_name' },
         { text: 'Email', value: 'email' },
         { text: 'Phone', value: 'phone' },
-        { text: 'Actions', value: 'actions', sortable: false },
+        // { text: 'Actions', value: 'actions', sortable: false },
       ],
       editedIndex: -1,
       editedItem: {

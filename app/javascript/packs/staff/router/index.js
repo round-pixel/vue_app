@@ -3,8 +3,8 @@ import VueRouter from 'vue-router'
 
 import Organizations from 'staff/components/Organizations'
 import Organization from 'staff/components/Organization'
-import Clients from 'staff/components/Clients'
-import Client from 'staff/components/Client'
+import Clients from 'staff/components/clients/Clients'
+import Client from 'staff/components/clients/Client'
 
 Vue.use(VueRouter)
 

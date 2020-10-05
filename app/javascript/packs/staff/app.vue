@@ -13,8 +13,6 @@ import Navbar from 'components/Navbar'
 import Dashboard from 'components/Dashboard'
 import Footer from 'components/Footer'
 import Drawer from 'staff/components/Drawer'
-import Clients from 'staff/components/Clients'
-import Organizations from 'staff/components/Organizations'
 
 export default {
   components: {
