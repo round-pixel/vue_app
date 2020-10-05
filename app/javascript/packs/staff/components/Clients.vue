@@ -28,7 +28,15 @@
                           v-text-field(v-model= 'editedItem.full_name' label='Full name' :rules="fullnameRules")
                           v-text-field(v-model='editedItem.email' label='E-mail' :rules="emailRules")
                           v-text-field(v-model='editedItem.phone' label='Phone' :rules="phoneRules")
-                          v-select(v-model='editedItem.organizations' :items='organizationNames' :menu-props="{ maxHeight: '400' }" label='Select' multiple='' hint='Pick organizations' persistent-hint='')
+                          v-select(
+                            v-model='editedItem.organizations'
+                            :items='organizationNames'
+                            :menu-props="{ maxHeight: '400' }"
+                            label='Select'
+                            multiple=''
+                            hint='Pick organizations'
+                            persistent-hint=''
+                          )
                   v-card-actions
                     v-spacer
                     v-btn(color='blue darken-1' text='' @click='close')
@@ -137,7 +145,7 @@ export default {
           .then(response => this.organizations = response.data)
     },
 
-    save() {
+    save () {
       this.$refs.form.validate()
 
       Object.assign(this.editedItem['organizations'], this.organizations.filter(o => this.editedItem.organizations.includes(o.org_name)))
