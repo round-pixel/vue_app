@@ -14,7 +14,9 @@ Rails.application.routes.draw do
     namespace :staffs, path: 's' do
       get 'current', to: 'dashboard#current'
 
-      resources :clients, only: [:index, :show, :create, :update, :destroy]
+      resources :clients, only: [:index, :show, :create, :update, :destroy] do
+        delete "/destroy_organization", to: 'clients#destroy_organization'
+      end
       resources :organizations, only: [:index, :create, :update, :destroy]
     end
 
