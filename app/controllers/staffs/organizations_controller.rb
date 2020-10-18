@@ -4,7 +4,13 @@ class Staffs::OrganizationsController < ApplicationController
   before_action :set_organization, only: [:update, :destroy, :update_client_organzations]
 
   def index
-    render json: Organization.all.as_json(only: [:id, :org_name, :org_type, :inn, :ogrn])
+    json_conf = { only: [:id, :org_name, :org_type, :inn, :ogrn] }
+
+    if params[:client_id] && params[:status] == 'created'
+      render json: Organization.without_client(params[:client_id]).as_json(json_conf)
+    else
+      render json: Organization.all.as_json(json_conf)
+    end
   end
 
   def create

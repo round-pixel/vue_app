@@ -68,7 +68,6 @@ export default {
         { text: 'Full name', value: 'full_name' },
         { text: 'Email', value: 'email' },
         { text: 'Phone', value: 'phone' },
-        // { text: 'Actions', value: 'actions', sortable: false },
       ],
       newCLient: {
         email: '',

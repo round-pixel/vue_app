@@ -40,15 +40,6 @@ class Staffs::ClientsController < ApplicationController
     head :no_content
   end
 
-  def destroy_organization
-    ClientOrganization.find_by(
-        client_id: params[:client_id],
-        organization_id: params[:organization_id]
-    ).destroy
-
-    head :no_content
-  end
-
   private
 
     def set_client

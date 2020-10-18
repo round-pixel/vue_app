@@ -22,7 +22,7 @@ const api = {
     ),
   },
   organizations: {
-    index: () => adapter.get('/organizations'),
+    index: (params) => adapter.get('/organizations', { params }),
     create: (params) => adapter.post('/organizations', params),
     update: (params) => adapter.put(`/organizations/${params.id}`, params),
     destroy: (params) => adapter.delete(`/organizations/${params.id}`, params)
