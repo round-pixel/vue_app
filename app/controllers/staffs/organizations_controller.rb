@@ -1,7 +1,7 @@
 class Staffs::OrganizationsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
-  before_action :set_organization, only: [:update, :destroy, :update_client_organzations]
+  before_action :set_organization, only: [:show, :update, :destroy, :update_client_organzations]
 
   def index
     json_conf = { only: [:id, :org_name, :org_type, :inn, :ogrn] }
@@ -13,8 +13,12 @@ class Staffs::OrganizationsController < ApplicationController
     end
   end
 
+  def show
+    render json: @organization.as_json(only: [:id, :org_name, :org_type, :inn, :ogrn], include: :clients)
+  end
+
   def create
-    @organization = Organization.new(organization_params)
+    @organization = Organization.new
 
     add_clients
 

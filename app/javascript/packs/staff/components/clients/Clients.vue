@@ -108,7 +108,7 @@ export default {
     save () {
       this.$refs.form.validate()
 
-      Object.assign(this.newCLient['organizations'], this.organizations.filter(o => this.newCLient.organizations.includes(o.org_name)))
+      Object.assign(this.newCLient.organizations, this.organizations.filter(o => this.newCLient.organizations.includes(o.org_name)))
 
       this.$api.clients.create(this.newCLient)
           .then(response => {

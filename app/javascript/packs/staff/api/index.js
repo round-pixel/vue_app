@@ -24,6 +24,7 @@ const api = {
   },
   organizations: {
     index: (params) => adapter.get('/organizations', { params }),
+    show: (params) => adapter.get(`/organizations/${params.id}`),
     create: (params) => adapter.post('/organizations', params),
     update: (params) => adapter.put(`/organizations/${params.id}`, params),
     destroy: (params) => adapter.delete(`/organizations/${params.id}`, params)

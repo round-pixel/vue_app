@@ -16,7 +16,7 @@ Rails.application.routes.draw do
       get 'current', to: 'dashboard#current'
 
       resources :clients, only: [:index, :show, :create, :update, :destroy]
-      resources :organizations, only: [:index, :create, :update, :destroy]
+      resources :organizations, only: [:index, :show, :create, :update, :destroy]
     end
 
     namespace :clients, path: 'c' do
