@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   get 'staffs/dashboard', to: 'staffs/dashboard#index'
 
   devise_for :clients, controllers: {
-    sessions: 'clients/sessions'
+    sessions: 'clients/sessions',
+    passwords: 'clients/passwords'
   }
 
   devise_for :staffs, controllers: {

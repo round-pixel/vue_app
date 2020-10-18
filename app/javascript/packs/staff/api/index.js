@@ -11,6 +11,7 @@ const adapter = axios.create({
 const api = {
   current: () => adapter.get('/current'),
   sign_out: () => axios.get('/staffs/sign_out'),
+  reset_password: (params) => axios.put('/clients/password', params),
   clients: {
     index: () => adapter.get('/clients'),
     show: (params) => adapter.get(`/clients/${params.id}`),

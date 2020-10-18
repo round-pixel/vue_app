@@ -31,7 +31,7 @@ export default {
         error: false,
         client: {},
 
-        tab: 1,
+        tab: 0,
         items: [
           { tab: 'Organizations', component: Organizations },
           { tab: 'Profile', component: EditProfile },
