@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 
       resources :clients, only: [:index, :show, :create, :update, :destroy]
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
+      resources :equipments, only: [:index, :show, :create, :update, :destroy]
     end
 
     namespace :clients, path: 'c' do

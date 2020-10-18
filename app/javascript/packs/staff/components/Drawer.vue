@@ -25,7 +25,8 @@
       return {
         items: [
           { title: 'Clients', icon: 'mdi-account-supervisor', link: '/s/clients' },
-          { title: 'Organizations', icon: 'mdi-office-building-outline', link: '/s/organizations' }
+          { title: 'Organizations', icon: 'mdi-office-building-outline', link: '/s/organizations' },
+          { title: 'Equipments', icon: 'mdi-tools', link: '/s/equipments' },
         ],
 
         user: {}

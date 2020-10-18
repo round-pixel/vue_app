@@ -20,7 +20,7 @@
               v-card.pa-4
                 v-form(ref='form')
                   v-card-title
-                    span.headline 'New Organization'
+                    span.headline New Organization
                   v-card-text
                     v-container
                       v-row

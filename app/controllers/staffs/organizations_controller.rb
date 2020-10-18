@@ -14,7 +14,10 @@ class Staffs::OrganizationsController < ApplicationController
   end
 
   def show
-    render json: @organization.as_json(only: [:id, :org_name, :org_type, :inn, :ogrn], include: :clients)
+    render json: @organization.as_json(
+        only: [:id, :org_name, :org_type, :inn, :ogrn],
+        include: [:clients, :equipments]
+    )
   end
 
   def create
