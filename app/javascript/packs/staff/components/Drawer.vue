@@ -11,8 +11,9 @@
           v-icon(@click="sign_out") mdi-exit-to-app
     v-divider
 
-    v-list
-      v-list-item(v-for='item in items' :key='item.title' @click="$router.push({ path: item.link })")
+    v-list(dense)
+      v-list-item(
+        v-for='(item, i) in items' :key='i' :to="item.link" )
         v-list-item-icon
           v-icon {{ item.icon }}
         v-list-item-content

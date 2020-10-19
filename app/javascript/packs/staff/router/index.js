@@ -13,7 +13,7 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   mode: 'history',
   routes: [
-    { path: '/staffs/dashboard', redirect: '/s/equipments' },
+    { path: '/staffs/dashboard', redirect: '/s/clients' },
 
     { path: '/s/clients', component: Clients, name: 'clients' },
     { path: '/s/clients/:id', component: Client, name: 'client' },
