@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_27_134919) do
+ActiveRecord::Schema.define(version: 2020_10_03_150120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,16 @@ ActiveRecord::Schema.define(version: 2020_09_27_134919) do
     t.index ["reset_password_token"], name: "index_clients_on_reset_password_token", unique: true
   end
 
+  create_table "equipment", force: :cascade do |t|
+    t.bigint "organization_id"
+    t.string "name"
+    t.string "type"
+    t.string "serial_number"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["organization_id"], name: "index_equipment_on_organization_id"
+  end
+
   create_table "organizations", force: :cascade do |t|
     t.string "org_name"
     t.string "org_type"
@@ -58,6 +68,8 @@ ActiveRecord::Schema.define(version: 2020_09_27_134919) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "authentication_token", limit: 30
+    t.string "phone"
+    t.string "full_name"
     t.index ["authentication_token"], name: "index_staffs_on_authentication_token", unique: true
     t.index ["email"], name: "index_staffs_on_email", unique: true
     t.index ["reset_password_token"], name: "index_staffs_on_reset_password_token", unique: true

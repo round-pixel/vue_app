@@ -1,7 +1,7 @@
 class Staffs::ClientsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
-  before_action :set_client, only: [:update, :destroy, :update_client_organzations]
+  before_action :set_client, only: [:show, :update, :destroy, :update_client_organzations]
 
   def index
     render json: Client.all.as_json(only: [:id, :email, :full_name, :phone])
@@ -19,6 +19,9 @@ class Staffs::ClientsController < ApplicationController
     end
   end
 
+  def show
+    render json: @client.as_json(only: [:id, :full_name, :email, :phone], include: :organizations)
+  end
 
   def update
     @client.update_attributes(client_params)

@@ -1,12 +1,14 @@
 import Vue from 'vue'
-import vuetify from 'configs/plugins/vuetify'
+import vuetify from 'plugins/vuetify'
 
-import 'api/staffs'
-import App from 'packs/staff/app'
+import 'staff/api'
+import App from 'staff/app'
+import router from 'staff/router'
 
 document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({
     vuetify,
+    router,
     render: h => h(App)
   }).$mount()
   document.body.appendChild(app.$el)

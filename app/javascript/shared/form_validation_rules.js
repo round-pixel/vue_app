@@ -1,6 +1,6 @@
-import regexps from 'configs/regexps'
+import regexps from 'regexps'
 
-const { phoneRegexp, emailRegexp } = regexps
+const { phoneRegexp, emailRegexp, passwordRegexp } = regexps
 
 const validationRules = {
   fullnameRules: [
@@ -14,7 +14,12 @@ const validationRules = {
   emailRules: [
     v => !!v || 'Email is required',
     v => (v && emailRegexp.test(v)) || 'Email shoud be valid',
-  ]
+  ],
+  passwordRules: [
+    v => !!v || 'Password is required',
+    v => (v && v.length >= 8) || 'Password must be greater than 8 characters',
+    v => (v && passwordRegexp.test(v)) || 'Password shoud be valid',
+  ],
 }
 
 export default validationRules

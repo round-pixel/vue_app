@@ -1,5 +1,5 @@
 <template lang="pug">
   v-main
-    v-container
+    v-container.py-16
       slot
 </template>
