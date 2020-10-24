@@ -6,11 +6,11 @@
       p Error :(
     template(v-else)
       v-data-table.elevation-1.pa-4.mt-4(:headers='headers' :items='organizations' :search='search')
-        template(v-slot:top='')
-          v-toolbar(flat='')
+        template(v-slot:top)
+          v-toolbar(flat)
             v-toolbar-title Organizations
             v-spacer
-            v-text-field(v-model='search' append-icon='mdi-magnify' label='Search' single-line='' hide-details='')
+            v-text-field(v-model='search' append-icon='mdi-magnify' label='Search' single-line hide-details)
 </template>
 
 <script>

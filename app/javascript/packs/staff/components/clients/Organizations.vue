@@ -1,14 +1,14 @@
 <template lang="pug">
   v-data-table.elevation-1(:headers='headers' :items='currentClient.organizations' :search='search')
-    template(v-slot:top='')
-      v-toolbar(flat='')
+    template(v-slot:top)
+      v-toolbar(flat)
         v-toolbar-title Organizations
         v-spacer
-        v-text-field(v-model='search' append-icon='mdi-magnify' label='Search' single-line='' hide-details='')
+        v-text-field(v-model='search' append-icon='mdi-magnify' label='Search' single-line hide-details)
         v-spacer
         v-dialog(v-model='dialog' max-width='500px')
           template(v-slot:activator='{ on, attrs }')
-            v-btn.mb-2(color='primary' dark='' v-bind='attrs' v-on='on' @click="fetchOrganizations")
+            v-btn.mb-2(color='primary' dark v-bind='attrs' v-on='on' @click="fetchOrganizations")
               v-icon.mr-3(left) mdi-plus
               | Add Organization
           v-card.pa-8
@@ -17,19 +17,19 @@
               :items='newOrganizationsNames'
               :menu-props="{ maxHeight: '400' }"
               label='Select'
-              multiple=''
+              multiple
               hint='Pick organizations'
-              persistent-hint=''
+              persistent-hint
             )
             v-card-actions
               v-spacer
-              v-btn(color='blue darken-1' text='' @click='close')
+              v-btn(color='blue darken-1' text @click='close')
                 | Cancel
-              v-btn(color='blue darken-1' text='' @click='save')
+              v-btn(color='blue darken-1' text @click='save')
                 | Save
 
     template(v-slot:item.actions='{ item }')
-      v-icon(small='' @click='deleteOrganization(item)')
+      v-icon(small @click='deleteOrganization(item)')
         | mdi-delete
 </template>
 

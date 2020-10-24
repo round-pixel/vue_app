@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-form(ref='form' lazy-validation='')
+  v-form(ref='form' lazy-validation)
     v-col(md="6" xs="12")
       v-card(flat)
         v-alert(:value='alert.error' color='red' dark dense outlined text)
@@ -11,7 +11,7 @@
           v-text-field(v-model='password_confirmation' label='Pasword confirmation' :rules="passwordConfirmationRules")
         v-card-actions
           v-spacer
-          v-btn(color='blue darken-1' text='' @click='updateProfile')
+          v-btn(color='blue darken-1' text @click='updateProfile')
             | Update
 </template>
 
