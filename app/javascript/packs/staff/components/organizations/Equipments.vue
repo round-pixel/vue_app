@@ -1,14 +1,14 @@
 <template lang="pug">
   v-data-table.elevation-1.pa-4.mt-4(:headers='headers' :items='currentOrganization.equipments' :search='search')
-    template(v-slot:top='')
-      v-toolbar(flat='')
+    template(v-slot:top)
+      v-toolbar(flat)
         v-toolbar-title Equipments
         v-spacer
-        v-text-field(v-model='search' append-icon='mdi-magnify' label='Search' single-line='' hide-details='')
+        v-text-field(v-model='search' append-icon='mdi-magnify' label='Search' single-line hide-details)
         v-spacer
         v-dialog(v-model='dialog' max-width='500px')
           template(v-slot:activator='{ on, attrs }')
-            v-btn.mb-2(color='primary' dark='' v-bind='attrs' v-on='on')
+            v-btn.mb-2(color='primary' dark v-bind='attrs' v-on='on')
               v-icon.mr-3(left) mdi-plus
               | Add Equipment
           v-card.pa-4
@@ -24,13 +24,13 @@
                       v-text-field(v-model='newEquipment.serial_number' label='Serial number')
               v-card-actions
                 v-spacer
-                v-btn(color='blue darken-1' text='' @click='close')
+                v-btn(color='blue darken-1' text @click='close')
                   | Cancel
-                v-btn(color='blue darken-1' text='' @click='save')
+                v-btn(color='blue darken-1' text @click='save')
                   | Save
 
     template(v-slot:item.actions='{ item }')
-      v-icon(small='' @click='deleteEquipment(item)')
+      v-icon(small @click='deleteEquipment(item)')
         | mdi-delete
 
 </template>

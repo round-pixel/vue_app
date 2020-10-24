@@ -1,18 +1,19 @@
 <template lang="pug">
   v-navigation-drawer(color='primary' dark app absolute permanent)
-    template(v-slot:prepend='')
-      v-list-item(two-line='')
+    template(v-slot:prepend)
+      v-list-item(two-line)
         v-list-item-avatar
           img(src='https://randomuser.me/api/portraits/men/81.jpg')
         v-list-item-content
           v-list-item-title {{ user.full_name }}
           v-list-item-subtitle {{ user.email }}
-        v-btn(icon='')
+        v-btn(icon)
           v-icon(@click="sign_out") mdi-exit-to-app
     v-divider
 
-    v-list
-      v-list-item(v-for='item in items' :key='item.title' @click="$router.push({ path: item.link })")
+    v-list(dense)
+      v-list-item(
+        v-for='(item, i) in items' :key='i' :to="item.link" )
         v-list-item-icon
           v-icon {{ item.icon }}
         v-list-item-content

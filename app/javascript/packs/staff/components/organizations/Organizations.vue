@@ -6,15 +6,15 @@
       p Error :(
     template(v-else)
       v-data-table.elevation-1.pa-4.mt-4(:headers='headers' :items='organizations' :search='search' @click:row="pushToOrganization")
-        template(v-slot:top='')
-          v-toolbar(flat='')
+        template(v-slot:top)
+          v-toolbar(flat)
             v-toolbar-title Organizations
             v-spacer
-            v-text-field(v-model='search' append-icon='mdi-magnify' label='Search' single-line='' hide-details='')
+            v-text-field(v-model='search' append-icon='mdi-magnify' label='Search' single-line hide-details)
             v-spacer
             v-dialog(v-model='dialog' max-width='500px')
               template(v-slot:activator='{ on, attrs }')
-                v-btn.mb-2(color='primary' dark='' v-bind='attrs' v-on='on')
+                v-btn.mb-2(color='primary' dark v-bind='attrs' v-on='on')
                   v-icon.mr-3(left) mdi-plus
                   | Add Organization
               v-card.pa-4
@@ -29,13 +29,13 @@
                           v-text-field(v-model='newOrganization.org_type' label='Organization type')
                           v-text-field(v-model='newOrganization.inn' label='INN')
                           v-text-field(v-model='newOrganization.ogrn' label='OGRN')
-                          v-select(v-model='newOrganization.clients' :items='clientEmails' :menu-props="{ maxHeight: '400' }" label='Select' multiple='' hint='Pick clients' persistent-hint='')
+                          v-select(v-model='newOrganization.clients' :items='clientEmails' :menu-props="{ maxHeight: '400' }" label='Select' multiple hint='Pick clients' persistent-hint)
 
                   v-card-actions
                     v-spacer
-                    v-btn(color='blue darken-1' text='' @click='close')
+                    v-btn(color='blue darken-1' text @click='close')
                       | Cancel
-                    v-btn(color='blue darken-1' text='' @click='save')
+                    v-btn(color='blue darken-1' text @click='save')
                       | Save
 </template>
 

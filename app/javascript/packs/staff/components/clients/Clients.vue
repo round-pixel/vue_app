@@ -6,18 +6,18 @@
       p Error :(
     template(v-else)
       v-data-table.elevation-1(:headers='headers' :items='clients' :search='search' @click:row="pushToClient")
-        template(v-slot:top='')
-          v-toolbar(flat='')
+        template(v-slot:top)
+          v-toolbar(flat)
             v-toolbar-title Clients
             v-spacer
-            v-text-field(v-model='search' append-icon='mdi-magnify' label='Search' single-line='' hide-details='')
+            v-text-field(v-model='search' append-icon='mdi-magnify' label='Search' single-line hide-details)
             v-spacer
             v-dialog(v-model='dialog' max-width='500px')
               template(v-slot:activator='{ on, attrs }')
-                v-btn.mb-2(color='primary' dark='' v-bind='attrs' v-on='on')
+                v-btn.mb-2(color='primary' dark v-bind='attrs' v-on='on')
                   v-icon.mr-3(left) mdi-plus
                   | Add Client
-              v-form(ref='form' lazy-validation='')
+              v-form(ref='form' lazy-validation)
                 v-card.pa-4
                   v-card-title
                     span.headline New Client
@@ -33,15 +33,15 @@
                             :items='organizationNames'
                             :menu-props="{ maxHeight: '400' }"
                             label='Select'
-                            multiple=''
+                            multiple
                             hint='Pick organizations'
-                            persistent-hint=''
+                            persistent-hint
                           )
                   v-card-actions
                     v-spacer
-                    v-btn(color='blue darken-1' text='' @click='close')
+                    v-btn(color='blue darken-1' text @click='close')
                       | Cancel
-                    v-btn(color='blue darken-1' text='' @click='save')
+                    v-btn(color='blue darken-1' text @click='save')
                       | Save
 </template>
 

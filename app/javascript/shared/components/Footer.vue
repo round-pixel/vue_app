@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-footer(app='')
+  v-footer(app)
     p Footer
 </template>
 

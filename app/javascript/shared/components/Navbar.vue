@@ -5,7 +5,7 @@
       slot(name='title')
     v-spacer
     v-toolbar-title {{ user.email }}
-      v-btn(icon='' color='primary')
+      v-btn(icon color='primary')
         v-icon(@click="sign_out") mdi-exit-to-app
 </template>
 
